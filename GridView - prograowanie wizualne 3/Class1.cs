@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml.Serialization;
+using System.Text.Json;
 
 namespace GridView___prograowanie_wizualne_3
 {
@@ -60,5 +61,13 @@ namespace GridView___prograowanie_wizualne_3
             Console.WriteLine("Wiek: " + Age);
         }
 
-    }
+
+
+
+
+
+
+}
+
+
 }

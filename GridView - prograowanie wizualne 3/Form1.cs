@@ -4,6 +4,7 @@ using System.Data;
 using System.Text;
 using System.Xml.Serialization;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 namespace GridView___prograowanie_wizualne_3
 {
     public partial class Form1 : Form
@@ -93,7 +94,7 @@ namespace GridView___prograowanie_wizualne_3
             if (form2.ShowDialog() == DialogResult.OK)
             {
 
-                dataGridView1.Rows.Add(form2.ID,form2.Imie, form2.Nazwisko, form2.Wiek, form2.Stanowisko);
+                dataGridView1.Rows.Add(form2.ID, form2.Imie, form2.Nazwisko, form2.Wiek, form2.Stanowisko);
             }
         }
 
@@ -150,13 +151,13 @@ namespace GridView___prograowanie_wizualne_3
         private List<Person> GetPeopleFromDataGridView()
         {
             List<Person> people = new List<Person>();
-            int idCounter = 1; // Mo¿esz mieæ w³asne ID, albo u¿yæ tej prostej wersji
+       
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (!row.IsNewRow)
                 {
-                    int.TryParse(row.Cells[0].Value?.ToString(), out int ID);                    
+                    int.TryParse(row.Cells[0].Value?.ToString(), out int ID);
                     string firstName = row.Cells[1].Value?.ToString();
                     string lastName = row.Cells[2].Value?.ToString();
                     int.TryParse(row.Cells[3].Value?.ToString(), out int age);
@@ -187,7 +188,7 @@ namespace GridView___prograowanie_wizualne_3
 
         }
 
-        private void button6_Click( object sender, EventArgs e)
+        private void button6_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
@@ -199,6 +200,32 @@ namespace GridView___prograowanie_wizualne_3
                 {
                     SavePeopleToXml(saveFileDialog.FileName);
                 }
+            }
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                List<Person> people = GetPeopleFromDataGridView();
+                string jsonString = JsonSerializer.Serialize(people);
+
+                using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+                {
+                    saveFileDialog.Filter = "Pliki JSON (*.json)|*.json";
+                    saveFileDialog.Title = "Zapisz jako";
+                    saveFileDialog.FileName = "people.json";
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        File.WriteAllText(saveFileDialog.FileName, jsonString);
+                        MessageBox.Show("Dane zosta³y zapisane pomyœlnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wyst¹pi³ b³¹d przy zapisie: {ex.Message}", "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
