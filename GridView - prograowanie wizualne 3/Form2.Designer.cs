@@ -64,6 +64,7 @@
             richTextBox4.Size = new Size(325, 81);
             richTextBox4.TabIndex = 2;
             richTextBox4.Text = "";
+            richTextBox4.TextChanged += richTextBox4_TextChanged;
             // 
             // button1
             // 
@@ -73,6 +74,7 @@
             button1.TabIndex = 4;
             button1.Text = "Zatwierdź";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // button2
             // 
