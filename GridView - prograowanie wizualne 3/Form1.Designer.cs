@@ -38,6 +38,7 @@
             Nazwisko = new DataGridViewTextBoxColumn();
             Wiek = new DataGridViewTextBoxColumn();
             Stanowisko = new DataGridViewTextBoxColumn();
+            button6 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -53,7 +54,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(1225, 467);
+            button2.Location = new Point(1225, 394);
             button2.Name = "button2";
             button2.Size = new Size(204, 72);
             button2.TabIndex = 1;
@@ -126,11 +127,22 @@
             Stanowisko.Name = "Stanowisko";
             Stanowisko.Width = 200;
             // 
+            // button6
+            // 
+            button6.Location = new Point(1225, 507);
+            button6.Name = "button6";
+            button6.Size = new Size(204, 75);
+            button6.TabIndex = 5;
+            button6.Text = "XML";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1485, 950);
+            Controls.Add(button6);
             Controls.Add(dataGridView1);
             Controls.Add(button4);
             Controls.Add(button3);
@@ -154,7 +166,6 @@
         private DataGridViewTextBoxColumn Nazwisko;
         private DataGridViewTextBoxColumn Wiek;
         private DataGridViewTextBoxColumn Stanowisko;
-        
-
+        private Button button6;
     }
 }

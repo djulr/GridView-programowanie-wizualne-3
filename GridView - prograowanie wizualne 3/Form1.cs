@@ -2,6 +2,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.Data;
 using System.Text;
+using System.Xml.Serialization;
+using System.Runtime.CompilerServices;
 namespace GridView___prograowanie_wizualne_3
 {
     public partial class Form1 : Form
@@ -14,7 +16,7 @@ namespace GridView___prograowanie_wizualne_3
             {
                 StringBuilder csvContent = new StringBuilder();
 
-            
+
                 for (int i = 0; i < dataGridView1.Columns.Count; i++)
                 {
                     csvContent.Append(dataGridView1.Columns[i].HeaderText);
@@ -26,7 +28,7 @@ namespace GridView___prograowanie_wizualne_3
                 // Wiersze danych
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    if (!row.IsNewRow) 
+                    if (!row.IsNewRow)
                     {
                         for (int i = 0; i < dataGridView1.Columns.Count; i++)
                         {
@@ -38,7 +40,7 @@ namespace GridView___prograowanie_wizualne_3
                     }
                 }
 
-    
+
                 File.WriteAllText(filePath, csvContent.ToString(), Encoding.UTF8);
                 MessageBox.Show("Dane zapisane do pliku: " + filePath, "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -55,15 +57,15 @@ namespace GridView___prograowanie_wizualne_3
 
                 if (lines.Length > 0)
                 {
-                    dataGridView1.Rows.Clear(); 
+                    dataGridView1.Rows.Clear();
 
-                    for (int i = 1; i < lines.Length; i++) 
+                    for (int i = 1; i < lines.Length; i++)
                     {
                         string[] row = lines[i].Split(',');
 
-                        if (row.Length == 3) 
+                        if (row.Length == 5)
                         {
-                            dataGridView1.Rows.Add(row[0], row[1], row[2]);
+                            dataGridView1.Rows.Add(row[0], row[1], row[2], row[3], row[4]);
                         }
                         else
                         {
@@ -82,7 +84,7 @@ namespace GridView___prograowanie_wizualne_3
         {
             InitializeComponent();
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.MultiSelect = false; 
+            dataGridView1.MultiSelect = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -90,8 +92,8 @@ namespace GridView___prograowanie_wizualne_3
             Form2 form2 = new Form2();
             if (form2.ShowDialog() == DialogResult.OK)
             {
-                
-                dataGridView1.Rows.Add(form2.Imie, form2.Nazwisko, form2.Wiek, form2.Stanowisko);
+
+                dataGridView1.Rows.Add(form2.ID,form2.Imie, form2.Nazwisko, form2.Wiek, form2.Stanowisko);
             }
         }
 
@@ -99,7 +101,7 @@ namespace GridView___prograowanie_wizualne_3
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
-     
+
                 dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
             }
             else
@@ -136,8 +138,8 @@ namespace GridView___prograowanie_wizualne_3
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                   string filePath = openFileDialog.FileName;
-    LoadCsvToDataGridView(filePath);
+                    string filePath = openFileDialog.FileName;
+                    LoadCsvToDataGridView(filePath);
                 }
 
             }
@@ -145,5 +147,59 @@ namespace GridView___prograowanie_wizualne_3
 
         }
 
+        private List<Person> GetPeopleFromDataGridView()
+        {
+            List<Person> people = new List<Person>();
+            int idCounter = 1; // Mo¿esz mieæ w³asne ID, albo u¿yæ tej prostej wersji
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    int.TryParse(row.Cells[0].Value?.ToString(), out int ID);                    
+                    string firstName = row.Cells[1].Value?.ToString();
+                    string lastName = row.Cells[2].Value?.ToString();
+                    int.TryParse(row.Cells[3].Value?.ToString(), out int age);
+                    string position = row.Cells[4].Value?.ToString();
+
+                    people.Add(new Person(ID, firstName, lastName, age, position));
+                }
+            }
+
+            return people;
+        }
+
+        private void SavePeopleToXml(string filePath)
+        {
+            List<Person> people = GetPeopleFromDataGridView();
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Person>));
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                serializer.Serialize(writer, people);
+            }
+
+            MessageBox.Show("Dane zosta³y zapisane do pliku XML.");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button6_Click( object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Pliki XML|*.xml";
+                saveFileDialog.Title = "Zapisz do XML";
+                saveFileDialog.FileName = "dane.xml";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    SavePeopleToXml(saveFileDialog.FileName);
+                }
+            }
+        }
     }
 }
