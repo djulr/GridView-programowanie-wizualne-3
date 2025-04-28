@@ -93,7 +93,7 @@ namespace GridView___prograowanie_wizualne_3
             if (form2.ShowDialog() == DialogResult.OK)
             {
 
-                dataGridView1.Rows.Add(form2.ID,form2.Imie, form2.Nazwisko, form2.Wiek, form2.Stanowisko);
+                dataGridView1.Rows.Add(form2.ID, form2.Imie, form2.Nazwisko, form2.Wiek, form2.Stanowisko);
             }
         }
 
@@ -156,7 +156,7 @@ namespace GridView___prograowanie_wizualne_3
             {
                 if (!row.IsNewRow)
                 {
-                    int.TryParse(row.Cells[0].Value?.ToString(), out int ID);                    
+                    int.TryParse(row.Cells[0].Value?.ToString(), out int ID);
                     string firstName = row.Cells[1].Value?.ToString();
                     string lastName = row.Cells[2].Value?.ToString();
                     int.TryParse(row.Cells[3].Value?.ToString(), out int age);
@@ -187,7 +187,7 @@ namespace GridView___prograowanie_wizualne_3
 
         }
 
-        private void button6_Click( object sender, EventArgs e)
+        private void button6_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
@@ -198,6 +198,47 @@ namespace GridView___prograowanie_wizualne_3
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     SavePeopleToXml(saveFileDialog.FileName);
+                }
+            }
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Pliki XML (*.xml)|*.xml";
+                openFileDialog.Title = "Wczytaj plik XML";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string filePath = openFileDialog.FileName;
+
+                        XmlSerializer serializer = new XmlSerializer(typeof(List<Person>));
+
+                        using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                        {
+                            List<Person> people = (List<Person>)serializer.Deserialize(fs);
+
+                            if (people != null)
+                            {
+                                dataGridView1.Rows.Clear();
+                                foreach (Person person in people)
+                                {
+                                    dataGridView1.Rows.Add(person.ID, person.FirstName, person.LastName, person.Age, person.Position);
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Brak danych w pliku XML.", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("B³¹d podczas wczytywania pliku XML: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
