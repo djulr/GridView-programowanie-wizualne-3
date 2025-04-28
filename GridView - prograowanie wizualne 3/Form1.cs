@@ -151,7 +151,7 @@ namespace GridView___prograowanie_wizualne_3
         private List<Person> GetPeopleFromDataGridView()
         {
             List<Person> people = new List<Person>();
-       
+
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
@@ -226,6 +226,45 @@ namespace GridView___prograowanie_wizualne_3
             catch (Exception ex)
             {
                 MessageBox.Show($"Wyst¹pi³ b³¹d przy zapisie: {ex.Message}", "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+       
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Pliki JSON (*.json)|*.json";
+                openFileDialog.Title = "Wczytaj plik JSON";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string filePath = openFileDialog.FileName;
+                        string jsonString = File.ReadAllText(filePath);
+
+                        List<Person> people = JsonSerializer.Deserialize<List<Person>>(jsonString);
+
+                        if (people != null)
+                        {
+                            dataGridView1.Rows.Clear();
+                            foreach (Person person in people)
+                            {
+                                dataGridView1.Rows.Add(person.ID, person.FirstName, person.LastName, person.Age, person.Position);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Brak danych w pliku JSON.", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("B³¹d podczas wczytywania pliku JSON: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
     }

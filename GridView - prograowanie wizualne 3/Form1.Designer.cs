@@ -40,6 +40,7 @@
             Stanowisko = new DataGridViewTextBoxColumn();
             button6 = new Button();
             button5 = new Button();
+            button7 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -148,11 +149,22 @@
             button5.UseVisualStyleBackColor = true;
             button5.Click += button5_Click_1;
             // 
+            // button7
+            // 
+            button7.Location = new Point(1216, 644);
+            button7.Name = "button7";
+            button7.Size = new Size(204, 69);
+            button7.TabIndex = 7;
+            button7.Text = "Odczyt JSON";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1485, 950);
+            Controls.Add(button7);
             Controls.Add(button5);
             Controls.Add(button6);
             Controls.Add(dataGridView1);
@@ -180,5 +192,6 @@
         private DataGridViewTextBoxColumn Stanowisko;
         private Button button6;
         private Button button5;
+        private Button button7;
     }
 }
