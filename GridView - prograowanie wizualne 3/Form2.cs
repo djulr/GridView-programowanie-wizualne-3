@@ -20,6 +20,7 @@ namespace GridView___prograowanie_wizualne_3
         {
             InitializeComponent();
         }
+        public int ID => new Random().Next();
         public string Imie => richTextBox1.Text;
         public string Nazwisko => richTextBox2.Text;
         public string Wiek => richTextBox4.Text;
