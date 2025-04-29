@@ -39,6 +39,7 @@
             Wiek = new DataGridViewTextBoxColumn();
             Stanowisko = new DataGridViewTextBoxColumn();
             button6 = new Button();
+            button8 = new Button();
             button5 = new Button();
             button7 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -139,6 +140,16 @@
             button6.UseVisualStyleBackColor = true;
             button6.Click += button6_Click;
             // 
+            // button8
+            // 
+            button8.Location = new Point(1225, 794);
+            button8.Name = "button8";
+            button8.Size = new Size(204, 71);
+            button8.TabIndex = 6;
+            button8.Text = "Odczyt z XML";
+            button8.UseVisualStyleBackColor = true;
+            button8.Click += button5_Click_1;
+            // 
             // button5
             // 
             button5.Location = new Point(1216, 538);
@@ -164,6 +175,7 @@
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1485, 950);
+            Controls.Add(button8);
             Controls.Add(button7);
             Controls.Add(button5);
             Controls.Add(button6);
@@ -191,6 +203,7 @@
         private DataGridViewTextBoxColumn Wiek;
         private DataGridViewTextBoxColumn Stanowisko;
         private Button button6;
+        private Button button8;
         private Button button5;
         private Button button7;
     }

@@ -267,5 +267,46 @@ namespace GridView___prograowanie_wizualne_3
                 }
             }
         }
+
+        private void button55_Click_1(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Pliki XML (*.xml)|*.xml";
+                openFileDialog.Title = "Wczytaj plik XML";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string filePath = openFileDialog.FileName;
+
+                        XmlSerializer serializer = new XmlSerializer(typeof(List<Person>));
+
+                        using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                        {
+                            List<Person> people = (List<Person>)serializer.Deserialize(fs);
+
+                            if (people != null)
+                            {
+                                dataGridView1.Rows.Clear();
+                                foreach (Person person in people)
+                                {
+                                    dataGridView1.Rows.Add(person.ID, person.FirstName, person.LastName, person.Age, person.Position);
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Brak danych w pliku XML.", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("B³¹d podczas wczytywania pliku XML: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
     }
 }
